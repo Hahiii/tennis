@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let ballY = 50;
   let ballSpeedY = 5;
   let paddel1Y = 250;
+  let paddel2Y = 250;
+  const PADDLE_THICKNESS = 10;
   const PADDLE_HEIGHT = 100;
   let framesPerSecond = 30;
 
@@ -35,16 +37,24 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawEverything() {
     // draws the background.
     colorRect(0, 0, canvas.width, canvas.height, "black");
+    // left players paddle
+    colorRect(0, paddel1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, "white");
+    // right players paddle
+    colorRect(canvas.width - PADDLE_THICKNESS, paddel2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, "white");
     // draws the ball.
     colorCircle(ballX, ballY, 10, "white")
-    // left players paddle.
-    colorRect(0, paddel1Y, 10, PADDLE_HEIGHT, "white");
-    // // draws the right player.
-    // canvasContext.fillStyle = "white";
-    // canvasContext.fillRect(500, 0, 10, 100)
   }
 
+  function computerMovement() {
+    let paddel2YCenter = paddel2Y + (PADDLE_HEIGHT / 2)
+    if (paddel2YCenter < ballY - 35) {
+      paddel2Y += 6
+    } else if (paddel2YCenter > ballY + 35) {
+      paddel2Y -= 6
+    }
+  }
   function moveEverything() {
+    computerMovement()
     ballX += ballSpeedX
     ballY += ballSpeedY
     if (ballX < 0) {
@@ -54,9 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
         resetBall()
       }
     }
-    if (ballX >= canvas.width) (
-      ballSpeedX = -ballSpeedX
-    )
+    if (ballX >= canvas.width) {
+      if (ballY > paddel2Y && ballY < paddel2Y + PADDLE_HEIGHT) {
+        ballSpeedX = -ballSpeedX
+      } else {
+        resetBall()
+      }
+    }
     if (ballY < 0) {
       ballSpeedY = -ballSpeedY
     }
