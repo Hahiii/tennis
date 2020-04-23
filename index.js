@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   let canvas = document.querySelector("#canvas");
   canvas.addEventListener("mousemove", mouseOverEvent, false);
+  canvas.addEventListener("click", mouseClickEvent, false);
   let canvasContext = canvas.getContext('2d');
   let ballX = 50;
   let ballSpeedX = 5;
@@ -12,10 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let player2Score = 0;
   const PADDLE_THICKNESS = 10;
   const PADDLE_HEIGHT = 100;
-  const WINNING_SCORE = 6;
+  const WINNING_SCORE = 1;
   let framesPerSecond = 30;
+  let showignWinScreen = false;
 
-  setInterval(() => {
+  let interval = setInterval(() => {
     drawEverything();
     moveEverything()
   }, 1000 / framesPerSecond)
@@ -37,7 +39,30 @@ document.addEventListener("DOMContentLoaded", () => {
     paddel1Y = mousePos.y - (PADDLE_HEIGHT / 2);
   }
 
+  function mouseClickEvent() {
+    if (showignWinScreen) {
+      showignWinScreen = false;
+      player1Score = 0;
+      player2Score = 0;
+      ballSpeedY = 5;
+      interval = setInterval(() => {
+        drawEverything();
+        moveEverything()
+      }, 1000 / framesPerSecond)
+    }
+  }
+
   function drawEverything() {
+    if (showignWinScreen) {
+      if (player1Score === WINNING_SCORE) {
+        colorPlayerScore("Left won", canvas.width / 2, 100)
+      } else if (player2Score === WINNING_SCORE) {
+        colorPlayerScore("Right Won", canvas.width / 2, 100)
+      }
+      colorPlayerScore("Click to Play again", canvas.width / 2, 400);
+      clearInterval(interval);
+      return;
+    }
     // draws the background.
     colorRect(0, 0, canvas.width, canvas.height, "black");
     // left players paddle
@@ -100,11 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
     canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true)
     canvasContext.fill();
   }
+
   // draws players paddle
   function colorRect(centerX, centerY, width, height, drawColor) {
     canvasContext.fillStyle = drawColor;
     canvasContext.fillRect(centerX, centerY, width, height)
   }
+
   // draws the players score
   function colorPlayerScore(score, centerX, centerY) {
     canvasContext.fillText(score, centerX, centerY)
@@ -113,8 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // resets the ball
   function resetBall() {
     if (player1Score === WINNING_SCORE || player2Score === WINNING_SCORE) {
-      player1Score = 0;
-      player2Score = 0;
+      showignWinScreen = true;
     }
     ballSpeedX = -ballSpeedX
     ballX = canvas.width / 2;
