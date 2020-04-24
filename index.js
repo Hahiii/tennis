@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   canvas.addEventListener("mousemove", mouseOverEvent, false);
   canvas.addEventListener("click", mouseClickEvent, false);
   let canvasContext = canvas.getContext('2d');
+  canvasContext.font = "20px Georgia";
+
   let ballX = 50;
   let ballSpeedX = 5;
   let ballY = 50;
@@ -52,19 +54,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+
+  function drawNet(centerX, width, height, drawColor) {
+    for (let i = 5; i < canvas.height; i += 40) {
+      canvasContext.fillStyle = drawColor;
+      canvasContext.fillRect(centerX, i, width, height)
+    }
+  }
+
   function drawEverything() {
     if (showignWinScreen) {
+      let colorPlayer1 = "red";
+      let colorPlayer2 = "red";
+      let text = "";
+      colorRect(0, 0, canvas.width, canvas.height, "black");
       if (player1Score === WINNING_SCORE) {
-        colorPlayerScore("Left won", canvas.width / 2, 100)
+        colorPlayer1 = "green";
+        text = "Left Player Won!";
+        colorWinningScreen(text, ((canvas.width / 2) - text.length * (30 / 4)), 100, "white", 30)
       } else if (player2Score === WINNING_SCORE) {
-        colorPlayerScore("Right Won", canvas.width / 2, 100)
+        colorPlayer2 = "green";
+        text = "Right Player Won!";
+        colorWinningScreen(text, ((canvas.width / 2) - text.length * (30 / 4)), 100, "white", 30)
       }
-      colorPlayerScore("Click to Play again", canvas.width / 2, 400);
+      text = "Click to Play again";
+      colorPlayerScore(player1Score, 100, 100, colorPlayer1);
+      colorPlayerScore(player2Score, canvas.width - 100, 100, colorPlayer2);
+      colorWinningScreen(text, ((canvas.width / 2) - text.length * (20 / 4)), 400, "white", 20);
       clearInterval(interval);
       return;
     }
     // draws the background.
     colorRect(0, 0, canvas.width, canvas.height, "black");
+    // draws the net
+    drawNet(canvas.width / 2 - 1, 2, 30, "white")
+
     // left players paddle
     colorRect(0, paddel1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, "white");
     // right players paddle
@@ -96,8 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let deltaY = ballY - (paddel1Y + PADDLE_HEIGHT / 2);
         ballSpeedY = deltaY * .35;
       } else {
-        resetBall();
         player2Score += 1;
+        resetBall();
       }
     }
     if (ballX >= canvas.width) {
@@ -106,8 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let deltaY = ballY - (paddel2Y + PADDLE_HEIGHT / 2);
         ballSpeedY = deltaY * .35;
       } else {
-        resetBall();
         player1Score += 1;
+        resetBall();
       }
     }
     if (ballY < 0) {
@@ -133,8 +157,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // draws the players score
-  function colorPlayerScore(score, centerX, centerY) {
+  function colorPlayerScore(score, centerX, centerY, drawColor) {
+    canvasContext.fillStyle = drawColor;
     canvasContext.fillText(score, centerX, centerY)
+  }
+
+  // draws the winning text
+  function colorWinningScreen(text, centerX, centerY, drawColor, textSize) {
+    canvasContext.font = `${textSize}px Georgia`;
+    canvasContext.fillStyle = drawColor;
+    console.log(centerX);
+
+    canvasContext.fillText(text, centerX, centerY)
   }
 
   // resets the ball
