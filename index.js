@@ -2,9 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let canvas = document.querySelector("#canvas");
   canvas.addEventListener("mousemove", mouseOverEvent, false);
   canvas.addEventListener("click", mouseClickEvent, false);
+  if (canvas.clientHeight < 900) {
+    canvas.addEventListener("touchmove", touchMoveEvent, false);
+  }
   let canvasContext = canvas.getContext('2d');
   canvasContext.font = "20px Georgia";
-
   let ballX = 50;
   let ballSpeedX = 5;
   let ballY = 50;
@@ -18,6 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const WINNING_SCORE = 6;
   let framesPerSecond = 30;
   let showignWinScreen = false;
+
+
+  function touchMoveEvent(event) {
+    event.preventDefault()
+    let mousePos = calculateMousePos(event.targetTouches[0]);
+    paddel1Y = mousePos.y * 2
+  }
+
 
   let interval = setInterval(() => {
     drawEverything();
