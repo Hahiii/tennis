@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-
+  // draws the net
   function drawNet(centerX, width, height, drawColor) {
     for (let i = 5; i < canvas.height; i += 40) {
       canvasContext.fillStyle = drawColor;
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // draws everything togethere
   function drawEverything() {
     if (showignWinScreen) {
       let colorPlayer1 = "red";
@@ -116,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     computerMovement()
     ballX += ballSpeedX
     ballY += ballSpeedY
-    if (ballX < 0) {
+    if (ballX <= 10) {
       if (ballY > paddel1Y && ballY < paddel1Y + PADDLE_HEIGHT) {
         ballSpeedX = -ballSpeedX
         let deltaY = ballY - (paddel1Y + PADDLE_HEIGHT / 2);
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resetBall();
       }
     }
-    if (ballX >= canvas.width) {
+    if (ballX >= canvas.width - 10) {
       if (ballY > paddel2Y && ballY < paddel2Y + PADDLE_HEIGHT) {
         ballSpeedX = -ballSpeedX
         let deltaY = ballY - (paddel2Y + PADDLE_HEIGHT / 2);
@@ -180,4 +181,5 @@ document.addEventListener("DOMContentLoaded", () => {
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
   }
+
 })
