@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let player2Score = 0;
   const PADDLE_THICKNESS = 10;
   const PADDLE_HEIGHT = 100;
-  const WINNING_SCORE = 1;
+  const WINNING_SCORE = 6;
   let framesPerSecond = 30;
   let showignWinScreen = false;
 
@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     colorPlayerScore(player2Score, canvas.width - 100, 100)
   }
 
+  // makes the right paddle move
   function computerMovement() {
     let paddel2YCenter = paddel2Y + (PADDLE_HEIGHT / 2)
     if (paddel2YCenter < ballY - 35) {
@@ -109,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
       paddel2Y -= 6
     }
   }
+
   // makes the moves
   function moveEverything() {
     computerMovement()
@@ -166,8 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function colorWinningScreen(text, centerX, centerY, drawColor, textSize) {
     canvasContext.font = `${textSize}px Georgia`;
     canvasContext.fillStyle = drawColor;
-    console.log(centerX);
-
     canvasContext.fillText(text, centerX, centerY)
   }
 
@@ -180,6 +180,4 @@ document.addEventListener("DOMContentLoaded", () => {
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
   }
-  drawEverything()
-
 })
