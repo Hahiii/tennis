@@ -2,9 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let canvas = document.querySelector("#canvas");
   canvas.addEventListener("mousemove", mouseOverEvent, false);
   canvas.addEventListener("click", mouseClickEvent, false);
-  if (canvas.clientHeight < 900) {
-    canvas.addEventListener("touchmove", touchMoveEvent, false);
-  }
+  canvas.addEventListener("touchmove", touchMoveEvent, false);
+  
   let canvasContext = canvas.getContext('2d');
   canvasContext.font = "20px Georgia";
   let ballX = 50;

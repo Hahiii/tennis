@@ -7,7 +7,7 @@ body {
   align-items: center;
 }
 
-@media  only screen and (max-width: 900px) {
+@media only screen and (max-width: 900px) {
   .canvas {
     width: 400px;
     height: 300px;
